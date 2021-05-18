@@ -3,6 +3,7 @@ package com.boedayaid.boedayaapp.ui.home
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -31,16 +32,18 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val transformer = CompositePageTransformer().apply {
-            addTransformer(MarginPageTransformer(40))
+            addTransformer(MarginPageTransformer(20))
             addTransformer { page, position ->
                 val r = 1 - abs(position)
-                val temp = r * 0.12f
                 page.scaleY = 0.90f + r * 0.05f
             }
         }
         provinceAdapter = ProvinceAdapter()
-        provinceAdapter.setOnClick { possition ->
-            val bottomSheet = BottomSheetFragment.newInstance(province[possition].id.toString())
+        provinceAdapter.setOnClick { position ->
+            val bottomSheet = BottomSheetFragment.newInstance(
+                province[position].id.toString(),
+                province[position].name
+            )
             bottomSheet.show(supportFragmentManager, "Bottom Sheet")
         }
 
@@ -52,8 +55,6 @@ class HomeActivity : AppCompatActivity() {
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             setPageTransformer(transformer)
         }
-
-
 
         viewModel.listIsland.observe(this) { lands ->
             islands = lands

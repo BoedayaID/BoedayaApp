@@ -11,7 +11,6 @@ class ProvinceAdapter : RecyclerView.Adapter<ProvinceAdapter.ViewHolder>() {
     private val province = mutableListOf<Province>()
     private lateinit var onClick: (Int) -> Unit
 
-
     fun setList(list: List<Province>) {
         province.clear()
         province.addAll(list)

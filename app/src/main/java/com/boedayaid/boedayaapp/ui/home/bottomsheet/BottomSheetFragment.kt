@@ -14,11 +14,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class BottomSheetFragment : BottomSheetDialogFragment() {
     companion object {
         private const val PROVINCE_ID = "province_id"
+        private const val PROVINCE_NAME = "province_name"
 
-        fun newInstance(id: String): BottomSheetFragment =
+        fun newInstance(id: String, name: String): BottomSheetFragment =
             BottomSheetFragment().apply {
                 arguments = Bundle().apply {
                     putString(PROVINCE_ID, id)
+                    putString(PROVINCE_NAME, name)
                 }
             }
     }
@@ -28,8 +30,9 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     private val viewModel: BottomSheetViewModel by viewModels()
 
     private lateinit var provinceId: String
+    private lateinit var provinceName: String
     private lateinit var sukuAdapter: SukuAdapter
-    private lateinit var listSuku : List<Suku>
+    private lateinit var listSuku: List<Suku>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,8 +44,11 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         provinceId = arguments?.getString(PROVINCE_ID).toString()
-        sukuAdapter = SukuAdapter()
+        provinceName = arguments?.getString(PROVINCE_NAME).toString()
 
+        binding.tvProvinceName.text = "Provinsi $provinceName"
+
+        sukuAdapter = SukuAdapter()
         sukuAdapter.setOnClick { position ->
             Toast.makeText(context, listSuku[position].toString(), Toast.LENGTH_SHORT).show()
         }
