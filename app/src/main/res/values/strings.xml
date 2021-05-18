@@ -4,9 +4,7 @@
     <string name="province">Province</string>
     <string name="province_logo">Province Logo</string>
     <string name="dummy_province_name">Jawa Barat</string>
-<<<<<<< HEAD
-=======
     <string name="splash_image">splash image</string>
     <string name="boedaya_id">Boedaya ID</string>
->>>>>>> 12b643b5a305f7993306bd31d2b5d01e93228b8e
+    <string name="dummy_suku_name">Sunda</string>
 </resources>

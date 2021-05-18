@@ -1,7 +1,6 @@
 package com.boedayaid.boedayaapp.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,9 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.boedayaid.boedayaapp.R
 import com.boedayaid.boedayaapp.data.model.Island
+import com.boedayaid.boedayaapp.data.model.Province
 import com.boedayaid.boedayaapp.databinding.ActivityHomeBinding
+import com.boedayaid.boedayaapp.ui.home.bottomsheet.BottomSheetFragment
 import com.google.android.material.chip.Chip
 import java.util.*
 import kotlin.math.abs
@@ -21,9 +22,11 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var provinceAdapter: ProvinceAdapter
     private var islands = listOf<Island>()
+    private var province = listOf<Province>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_BoedayaID)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,11 +35,15 @@ class HomeActivity : AppCompatActivity() {
             addTransformer { page, position ->
                 val r = 1 - abs(position)
                 val temp = r * 0.12f
-                Log.d("TRANS", temp.toString())
                 page.scaleY = 0.90f + r * 0.05f
             }
         }
         provinceAdapter = ProvinceAdapter()
+        provinceAdapter.setOnClick { possition ->
+            val bottomSheet = BottomSheetFragment.newInstance(province[possition].id.toString())
+            bottomSheet.show(supportFragmentManager, "Bottom Sheet")
+        }
+
         binding.carouselProvince.apply {
             adapter = provinceAdapter
             clipToPadding = false
@@ -47,12 +54,13 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
+
         viewModel.listIsland.observe(this) { lands ->
             islands = lands
 
             for (index in lands.indices) {
                 val chipIsland = layoutInflater.inflate(
-                    R.layout.chip_island,
+                    R.layout.item_chip_island,
                     binding.chipGroupIndoIslands,
                     false
                 ) as Chip
@@ -63,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.listProvince.observe(this) { listProvince ->
+            province = listProvince
             provinceAdapter.setList(listProvince)
         }
 
