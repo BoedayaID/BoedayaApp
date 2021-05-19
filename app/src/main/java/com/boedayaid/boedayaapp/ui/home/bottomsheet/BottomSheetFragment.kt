@@ -1,14 +1,15 @@
 package com.boedayaid.boedayaapp.ui.home.bottomsheet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.boedayaid.boedayaapp.data.model.Suku
 import com.boedayaid.boedayaapp.databinding.FragmentBottomSheetBinding
+import com.boedayaid.boedayaapp.ui.detail.DetailActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
@@ -50,7 +51,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         sukuAdapter = SukuAdapter()
         sukuAdapter.setOnClick { position ->
-            Toast.makeText(context, listSuku[position].toString(), Toast.LENGTH_SHORT).show()
+            Intent(context, DetailActivity::class.java).also {
+                it.putExtra("SUKU_ID", listSuku[position].id)
+                startActivity(it)
+            }
         }
         binding.rvGridSuku.apply {
             adapter = sukuAdapter

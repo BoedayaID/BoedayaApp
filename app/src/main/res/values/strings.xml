@@ -7,4 +7,10 @@
     <string name="splash_image">splash image</string>
     <string name="boedaya_id">Boedaya ID</string>
     <string name="dummy_suku_name">Sunda</string>
+    <string name="translate_page">Translate Page</string>
+    <string name="translate_bahasa">Translate bahasa</string>
+    <string name="detail">Detail</string>
+    <string name="tap_to_speach">Tap to Speech</string>
+    <string name="dummy_chat">Ini adalah dummy Chat</string>
+    <string name="translate_ke_aksara"><u>Translate ke Aksara</u></string>
 </resources>

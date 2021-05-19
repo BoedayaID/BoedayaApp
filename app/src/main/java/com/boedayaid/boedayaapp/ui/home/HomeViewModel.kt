@@ -13,7 +13,7 @@ class HomeViewModel : ViewModel() {
     }
 
     companion object {
-        const val DEFAULT_QUERY = "all"
+        const val DEFAULT_QUERY = 0
     }
 
     val selectedIsland = MutableLiveData(DEFAULT_QUERY)
@@ -21,8 +21,8 @@ class HomeViewModel : ViewModel() {
     private val _listIsland = MutableLiveData<List<Island>>()
     val listIsland get() = _listIsland
 
-    val listProvince = selectedIsland.switchMap { queryString ->
-        getListProvince(queryString)
+    val listProvince = selectedIsland.switchMap { islandId ->
+        getListProvince(islandId)
     }
 
     private fun getListIslandFromServer() {
@@ -40,7 +40,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getListProvince(query: String): LiveData<List<Province>> {
+    private fun getListProvince(islandId: Int): LiveData<List<Province>> {
         val provinces = MutableLiveData<List<Province>>()
         val result = listOf(
             Province(
@@ -103,7 +103,7 @@ class HomeViewModel : ViewModel() {
                 "https://2.bp.blogspot.com/-XdJB7P9iSSM/Wbi5ojujjwI/AAAAAAAAD_c/q7EVtXBLGIUvzCgMLXlS59eBvDU_KgenQCLcBGAs/s1600/Logo%2BProv%2BJawa%2BBarat.png"
             ),
         )
-        provinces.value = if (query == DEFAULT_QUERY) result else resultJawa
+        provinces.value = if (islandId == DEFAULT_QUERY) result else resultJawa
         return provinces
     }
 }

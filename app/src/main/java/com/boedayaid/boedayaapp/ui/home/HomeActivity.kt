@@ -1,9 +1,9 @@
 package com.boedayaid.boedayaapp.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -13,7 +13,6 @@ import com.boedayaid.boedayaapp.data.model.Province
 import com.boedayaid.boedayaapp.databinding.ActivityHomeBinding
 import com.boedayaid.boedayaapp.ui.home.bottomsheet.BottomSheetFragment
 import com.google.android.material.chip.Chip
-import java.util.*
 import kotlin.math.abs
 
 class HomeActivity : AppCompatActivity() {
@@ -22,7 +21,8 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var provinceAdapter: ProvinceAdapter
-    private var islands = listOf<Island>()
+    private lateinit var bottomSheet : BottomSheetFragment
+        private var islands = listOf<Island>()
     private var province = listOf<Province>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         }
         provinceAdapter = ProvinceAdapter()
         provinceAdapter.setOnClick { position ->
-            val bottomSheet = BottomSheetFragment.newInstance(
+            bottomSheet = BottomSheetFragment.newInstance(
                 province[position].id.toString(),
                 province[position].name
             )
@@ -79,14 +79,17 @@ class HomeActivity : AppCompatActivity() {
         binding.chipGroupIndoIslands.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.all_islands -> {
-                    viewModel.selectedIsland.value = "all"
+                    viewModel.selectedIsland.value = 0
                 }
                 else -> {
-                    viewModel.selectedIsland.value =
-                        islands[checkedId].name.lowercase(Locale.getDefault())
+                    viewModel.selectedIsland.value = islands[checkedId].id
                 }
             }
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        bottomSheet.dismiss()
+    }
 }

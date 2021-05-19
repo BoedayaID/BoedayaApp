@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_gravity="end"
+        android:id="@+id/tv_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_item_chat_to"
+        android:maxWidth="250dp"
+        android:paddingVertical="10dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="15dp"
+        android:text="@string/dummy_chat"
+        android:textColor="@color/white" />
+
+</LinearLayout>

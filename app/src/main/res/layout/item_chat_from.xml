@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_item_chat_from"
+        android:maxWidth="250dp"
+        android:paddingVertical="10dp"
+        android:paddingStart="15dp"
+        android:textSize="14sp"
+        android:paddingEnd="25dp"
+        android:text="@string/dummy_chat"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:textColor="@color/black"
+        android:fontFamily="@font/sundanese_unicode"
+        android:id="@+id/btn_translate_akssara"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/translate_ke_aksara" />
+</LinearLayout>
