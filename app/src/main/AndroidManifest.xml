@@ -10,8 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.BoedayaID">
-        <activity android:name=".ui.translate.TranslateActivity"></activity>
+        <activity android:name=".ui.translate.TranslateActivity" />
         <activity android:name=".ui.detail.DetailActivity" />
         <activity
             android:name=".ui.home.HomeActivity"

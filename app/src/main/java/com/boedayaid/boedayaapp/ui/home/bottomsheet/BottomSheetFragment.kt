@@ -17,10 +17,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         private const val PROVINCE_ID = "province_id"
         private const val PROVINCE_NAME = "province_name"
 
-        fun newInstance(id: String, name: String): BottomSheetFragment =
+        fun newInstance(id: Int, name: String): BottomSheetFragment =
             BottomSheetFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PROVINCE_ID, id)
+                    putInt(PROVINCE_ID, id)
                     putString(PROVINCE_NAME, name)
                 }
             }
@@ -30,7 +30,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: BottomSheetViewModel by viewModels()
 
-    private lateinit var provinceId: String
+    private var provinceId: Int? = null
     private lateinit var provinceName: String
     private lateinit var sukuAdapter: SukuAdapter
     private lateinit var listSuku: List<Suku>
@@ -44,9 +44,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        provinceId = arguments?.getString(PROVINCE_ID).toString()
+        provinceId = arguments?.getInt(PROVINCE_ID, 0)
         provinceName = arguments?.getString(PROVINCE_NAME).toString()
 
+        showLoading(true)
         binding.tvProvinceName.text = "Provinsi $provinceName"
 
         sukuAdapter = SukuAdapter()
@@ -62,16 +63,35 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             setHasFixedSize(true)
         }
 
-        viewModel.getSukuFromServer(provinceId)
+        viewModel.getSukuFromServer(provinceId!!)
         viewModel.listSuku.observe(viewLifecycleOwner) { list ->
+            showLoading(false)
             listSuku = list
             sukuAdapter.setList(list)
+            if (listSuku.isEmpty()) {
+                showNoData()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.loading.visibility = View.VISIBLE
+            binding.rvGridSuku.visibility = View.GONE
+        } else {
+            binding.loading.visibility = View.GONE
+            binding.rvGridSuku.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showNoData() {
+        binding.tvStatus.visibility = View.VISIBLE
+        binding.rvGridSuku.visibility = View.GONE
     }
 
 }

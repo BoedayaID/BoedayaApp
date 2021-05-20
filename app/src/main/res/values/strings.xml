@@ -1,16 +1,17 @@
 <resources>
     <string name="app_name">BoedayaID</string>
-    <string name="all">All</string>
-    <string name="province">Province</string>
-    <string name="province_logo">Province Logo</string>
+    <string name="all">Semua</string>
+    <string name="province">Provinsi</string>
+    <string name="province_logo">Logo Provinsi</string>
     <string name="dummy_province_name">Jawa Barat</string>
     <string name="splash_image">splash image</string>
     <string name="boedaya_id">Boedaya ID</string>
     <string name="dummy_suku_name">Sunda</string>
-    <string name="translate_page">Translate Page</string>
+    <string name="translate_page">Halaman Terjemahan</string>
     <string name="translate_bahasa">Translate bahasa</string>
     <string name="detail">Detail</string>
-    <string name="tap_to_speach">Tap to Speech</string>
+    <string name="tap_to_speach">Sentuh Untuk Berbicara</string>
     <string name="dummy_chat">Ini adalah dummy Chat</string>
     <string name="translate_ke_aksara"><u>Translate ke Aksara</u></string>
+    <string name="suku_not_definded">Suku di daerah ini belum Terdaftar</string>
 </resources>

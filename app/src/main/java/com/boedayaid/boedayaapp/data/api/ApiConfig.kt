@@ -15,7 +15,7 @@ object ApiConfig {
 
     fun provideApiService(): ApiServices {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://tourism-api.dicoding.dev/")
+            .baseUrl("https://boedaya.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(provideOkHttpClient())
             .build()

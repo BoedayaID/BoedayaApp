@@ -1,7 +1,7 @@
 package com.boedayaid.boedayaapp.ui.home
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -21,8 +21,8 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var provinceAdapter: ProvinceAdapter
-    private lateinit var bottomSheet : BottomSheetFragment
-        private var islands = listOf<Island>()
+    private lateinit var bottomSheet: BottomSheetFragment
+    private var islands = listOf<Island>()
     private var province = listOf<Province>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +31,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        showLoadingCarousel(true)
+
         val transformer = CompositePageTransformer().apply {
             addTransformer(MarginPageTransformer(20))
             addTransformer { page, position ->
@@ -38,10 +40,11 @@ class HomeActivity : AppCompatActivity() {
                 page.scaleY = 0.90f + r * 0.05f
             }
         }
+
         provinceAdapter = ProvinceAdapter()
         provinceAdapter.setOnClick { position ->
             bottomSheet = BottomSheetFragment.newInstance(
-                province[position].id.toString(),
+                province[position].id,
                 province[position].name
             )
             bottomSheet.show(supportFragmentManager, "Bottom Sheet")
@@ -57,6 +60,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.listIsland.observe(this) { lands ->
+            showChipIsland()
             islands = lands
 
             for (index in lands.indices) {
@@ -71,7 +75,13 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.selectedIsland.observe(this) { islandId ->
+            showLoadingCarousel(true)
+            viewModel.getListProvince(islandId)
+        }
+
         viewModel.listProvince.observe(this) { listProvince ->
+            showLoadingCarousel(false)
             province = listProvince
             provinceAdapter.setList(listProvince)
         }
@@ -91,5 +101,19 @@ class HomeActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         bottomSheet.dismiss()
+    }
+
+    private fun showLoadingCarousel(state : Boolean){
+        if(state){
+            binding.loading.visibility = View.VISIBLE
+            binding.carouselProvince.visibility = View.GONE
+        }else{
+            binding.loading.visibility = View.GONE
+            binding.carouselProvince.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showChipIsland(){
+        binding.chipGroupIndoIslands.visibility = View.VISIBLE
     }
 }
