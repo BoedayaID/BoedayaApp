@@ -28,9 +28,13 @@ class TranslateViewModel : ViewModel() {
             val result = convertAksara(text)
             ChatFrom(1, result, ChatType.Aksara)
         }
-
         _listChat.value?.add(chat)
         _listChat.notifyObserver()
+    }
+
+    fun translate(text: String) {
+        val result = "$text Translated"
+        addChat(result, ChatAddress.FROM, false)
     }
 
     fun convertAksara(text: String): String {

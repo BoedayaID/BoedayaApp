@@ -31,13 +31,39 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
-        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/fab_speech"
         android:layout_below="@id/toolbar"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:overScrollMode="never" />
+
+    <ImageView
+        android:id="@+id/ripple_anim"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_above="@id/fab_speech"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/bg_rounded_ripple"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_speech_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_speech"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/blue_700"
+        android:src="@drawable/ic_mic"
+        android:visibility="gone"
+        app:fabCustomSize="70dp"
+        app:tint="@color/white"
+        tools:visibility="visible" />
+
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_speech"

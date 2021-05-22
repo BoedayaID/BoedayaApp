@@ -1,6 +1,10 @@
 package com.boedayaid.boedayaapp.ui.translate
 
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +14,16 @@ import com.boedayaid.boedayaapp.data.model.ChatAddress
 import com.boedayaid.boedayaapp.databinding.ActivityTranslateBinding
 
 class TranslateActivity : AppCompatActivity() {
+
+    private val openMicAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.open_mic)
+    }
+    private val closeMicAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.close_mic)
+    }
+
+    private var isMicOpen = false
+    private var handlerAnimation = Handler()
 
     private lateinit var binding: ActivityTranslateBinding
     private val viewModel: TranslateViewModel by viewModels()
@@ -54,7 +68,53 @@ class TranslateActivity : AppCompatActivity() {
         }
 
         binding.fabSpeech.setOnClickListener {
-            viewModel.addChat("Yoyo", ChatAddress.TO, false)
+            startAnim()
+            Handler().postDelayed({
+                stopAnim()
+            }, 3000)
+
+            isMicOpen = !isMicOpen
         }
+    }
+
+    private fun startAnim() {
+        binding.fabSpeech.isEnabled = false
+
+        binding.fabSpeechAnimation.visibility = View.INVISIBLE
+        binding.rippleAnim.visibility = View.INVISIBLE
+        binding.fabSpeechAnimation.startAnimation(openMicAnim)
+        binding.rippleAnim.startAnimation(openMicAnim)
+
+        runnable.run()
+    }
+
+
+    private fun stopAnim() {
+        binding.fabSpeech.isEnabled = true
+
+        binding.fabSpeechAnimation.visibility = View.VISIBLE
+        binding.rippleAnim.visibility = View.VISIBLE
+        binding.fabSpeechAnimation.startAnimation(closeMicAnim)
+        binding.rippleAnim.startAnimation(closeMicAnim)
+
+        handlerAnimation.removeCallbacks(runnable)
+
+        viewModel.addChat("Bahasa Indonesia", ChatAddress.TO, false)
+        viewModel.translate("Bahasa Indonesia")
+    }
+
+    private var runnable = object : Runnable {
+        override fun run() {
+            binding.rippleAnim.animate().scaleX(3f).scaleY(3f).alpha(0f)
+                .setDuration(700)
+                .withEndAction {
+                    binding.rippleAnim.scaleX = 1f
+                    binding.rippleAnim.scaleY = 1f
+                    binding.rippleAnim.alpha = 1f
+                }
+
+            handlerAnimation.postDelayed(this, 800)
+        }
+
     }
 }
