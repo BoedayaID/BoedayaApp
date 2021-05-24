@@ -2,17 +2,31 @@ package com.boedayaid.boedayaapp.ui.translate
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.boedayaid.boedayaapp.data.api.ApiConfig
 import com.boedayaid.boedayaapp.data.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TranslateViewModel : ViewModel() {
+
+    companion object {
+        const val TRANSLATE_LOADING = 1
+        const val TRANSLATE_DONE = 2
+    }
+
+    private val translateServices = ApiConfig.provideTranslateService()
+
     private val _listChat = MutableLiveData<MutableList<Chat>>(
         mutableListOf(
             ChatFrom(0, "Hallo, ada yang bisa saya bantu", ChatType.Regular),
-            ChatFrom(0, "Tuang", ChatType.Regular),
         )
     )
-
     val listChat get() = _listChat
+
+    val stateTranslate = MutableLiveData<Int>(0)
+
 
     fun addChat(text: String, type: ChatAddress, convertAksara: Boolean) {
         val chat = if (!convertAksara) {
@@ -33,8 +47,14 @@ class TranslateViewModel : ViewModel() {
     }
 
     fun translate(text: String) {
-        val result = "$text Translated"
-        addChat(result, ChatAddress.FROM, false)
+        viewModelScope.launch(Dispatchers.IO) {
+            stateTranslate.postValue(TRANSLATE_LOADING)
+            val result = translateServices.translate(text, "id", "su")
+            withContext(Dispatchers.Main) {
+                addChat(result.result, ChatAddress.FROM, false)
+            }
+            stateTranslate.postValue(TRANSLATE_DONE)
+        }
     }
 
     fun convertAksara(text: String): String {

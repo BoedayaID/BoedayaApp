@@ -39,6 +39,32 @@
         android:layout_marginBottom="10dp"
         android:overScrollMode="never" />
 
+    <LinearLayout
+        android:id="@+id/translate_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fab_speech"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:text="@string/translate_status"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/ripple_anim"
         android:layout_width="70dp"
@@ -49,6 +75,7 @@
         android:src="@drawable/bg_rounded_ripple"
         android:visibility="gone"
         tools:visibility="visible" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_speech_animation"

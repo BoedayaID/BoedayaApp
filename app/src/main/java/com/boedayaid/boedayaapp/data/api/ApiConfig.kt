@@ -21,4 +21,13 @@ object ApiConfig {
             .build()
         return retrofit.create(ApiServices::class.java)
     }
+
+    fun provideTranslateService(): TranslateServices {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://my-translate-api.herokuapp.com/api/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(provideOkHttpClient())
+            .build()
+        return retrofit.create(TranslateServices::class.java)
+    }
 }

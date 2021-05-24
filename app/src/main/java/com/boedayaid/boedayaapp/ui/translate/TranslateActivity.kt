@@ -15,11 +15,18 @@ import com.boedayaid.boedayaapp.databinding.ActivityTranslateBinding
 
 class TranslateActivity : AppCompatActivity() {
 
-    private val openMicAnim: Animation by lazy {
-        AnimationUtils.loadAnimation(this, R.anim.open_mic)
+    private val openAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.open_anim)
     }
-    private val closeMicAnim: Animation by lazy {
-        AnimationUtils.loadAnimation(this, R.anim.close_mic)
+    private val closeAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.close_anim)
+    }
+
+    private val openAnimTranslateStatus: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.open_anim)
+    }
+    private val closeAnimTranslateStatus: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.close_anim)
     }
 
     private var isMicOpen = false
@@ -64,43 +71,62 @@ class TranslateActivity : AppCompatActivity() {
 
         chatAdapter.setOnTranslate { position ->
             viewModel.addChat(listChat[position].text, ChatAddress.FROM, true)
-
         }
 
         binding.fabSpeech.setOnClickListener {
-            startAnim()
+            startRecordAudio()
             Handler().postDelayed({
-                stopAnim()
+                stopRecordAudio()
             }, 3000)
 
             isMicOpen = !isMicOpen
         }
+
+        viewModel.stateTranslate.observe(this) { state ->
+            when (state) {
+                TranslateViewModel.TRANSLATE_LOADING -> isTranslating(true)
+                TranslateViewModel.TRANSLATE_DONE -> isTranslating(false)
+            }
+        }
     }
 
-    private fun startAnim() {
+    private fun isTranslating(state: Boolean) {
+        if (state) {
+            binding.translateStatus.visibility = View.VISIBLE
+            binding.translateStatus.startAnimation(openAnimTranslateStatus)
+        } else {
+            binding.translateStatus.startAnimation(closeAnimTranslateStatus)
+            binding.translateStatus.visibility = View.GONE
+        }
+    }
+
+    private fun startRecordAudio() {
         binding.fabSpeech.isEnabled = false
 
-        binding.fabSpeechAnimation.visibility = View.INVISIBLE
-        binding.rippleAnim.visibility = View.INVISIBLE
-        binding.fabSpeechAnimation.startAnimation(openMicAnim)
-        binding.rippleAnim.startAnimation(openMicAnim)
+        binding.fabSpeechAnimation.visibility = View.VISIBLE
+        binding.rippleAnim.visibility = View.VISIBLE
+        binding.fabSpeechAnimation.startAnimation(openAnim)
+        binding.rippleAnim.startAnimation(openAnim)
 
         runnable.run()
     }
 
 
-    private fun stopAnim() {
+    private fun stopRecordAudio() {
         binding.fabSpeech.isEnabled = true
 
-        binding.fabSpeechAnimation.visibility = View.VISIBLE
-        binding.rippleAnim.visibility = View.VISIBLE
-        binding.fabSpeechAnimation.startAnimation(closeMicAnim)
-        binding.rippleAnim.startAnimation(closeMicAnim)
+        binding.fabSpeechAnimation.startAnimation(closeAnim)
+        binding.rippleAnim.startAnimation(closeAnim)
+        binding.fabSpeechAnimation.visibility = View.GONE
+        binding.rippleAnim.visibility = View.GONE
 
         handlerAnimation.removeCallbacks(runnable)
 
-        viewModel.addChat("Bahasa Indonesia", ChatAddress.TO, false)
-        viewModel.translate("Bahasa Indonesia")
+        // dummy result
+        val result = "selamat makan"
+
+        viewModel.addChat(result, ChatAddress.TO, false)
+        viewModel.translate(result)
     }
 
     private var runnable = object : Runnable {
