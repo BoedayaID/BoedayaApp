@@ -2,6 +2,7 @@ package com.boedayaid.boedayaapp.data.api
 
 import com.boedayaid.boedayaapp.data.api.respons.IslandResponse
 import com.boedayaid.boedayaapp.data.api.respons.ProvinceResponse
+import com.boedayaid.boedayaapp.data.api.respons.SukuDetailResponse
 import com.boedayaid.boedayaapp.data.api.respons.SukuResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,4 +20,7 @@ interface ApiServices {
 
     @GET("api/provinsi/{id}/suku")
     suspend fun getSukuByProvince(@Path("id") id: Int): SukuResponse
+
+    @GET("api/suku/{id}")
+    suspend fun getSukuById(@Path("id") id: Int): SukuDetailResponse
 }

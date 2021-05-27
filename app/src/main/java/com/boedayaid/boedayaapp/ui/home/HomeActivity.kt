@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var provinceAdapter: ProvinceAdapter
-    private lateinit var bottomSheet: BottomSheetFragment
+    private var bottomSheet: BottomSheetFragment = BottomSheetFragment()
     private var islands = listOf<Island>()
     private var province = listOf<Province>()
 
@@ -100,7 +100,9 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        bottomSheet.dismiss()
+        if (bottomSheet.isVisible){
+            bottomSheet.dismiss()
+        }
     }
 
     private fun showLoadingCarousel(state : Boolean){

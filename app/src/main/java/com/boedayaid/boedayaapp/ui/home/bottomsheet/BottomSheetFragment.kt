@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.boedayaid.boedayaapp.data.model.Suku
 import com.boedayaid.boedayaapp.databinding.FragmentBottomSheetBinding
 import com.boedayaid.boedayaapp.ui.detail.DetailActivity
+import com.boedayaid.boedayaapp.ui.detail.SplashToDetailActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
@@ -52,8 +53,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         sukuAdapter = SukuAdapter()
         sukuAdapter.setOnClick { position ->
-            Intent(context, DetailActivity::class.java).also {
+            Intent(context, SplashToDetailActivity::class.java).also {
                 it.putExtra("SUKU_ID", listSuku[position].id)
+                it.putExtra("SUKU_NAME", listSuku[position].name)
+                it.putExtra("SUKU_IMAGE", listSuku[position].image)
                 startActivity(it)
             }
         }

@@ -11,8 +11,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.BoedayaID">
+        android:theme="@style/Theme.BoedayaID"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.detail.SplashToDetailActivity"></activity>
         <activity android:name=".ui.translate.TranslateActivity" />
         <activity android:name=".ui.detail.DetailActivity" />
         <activity

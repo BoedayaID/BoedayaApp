@@ -15,4 +15,13 @@
     <string name="translate_ke_aksara"><u>Translate ke Aksara</u></string>
     <string name="suku_not_definded">Suku di daerah ini belum Terdaftar</string>
     <string name="translate_status">Sedang menerjemahkan</string>
+    <string name="sejarah">Sejarah</string>
+    <string name="dummy_sejarah">Suku Sunda adalah kelompok etnis yang berasal dari bagian barat pulau Jawa, Indonesia, dengan istilah Tatar Pasundan yang mencakup wilayah administrasi provinsi Jawa Barat, Banten, Jakarta, dan wilayah barat Jawa Tengah (Banyumasan). Orang Sunda tersebar diberbagai wilayah Indonesia, dengan provinsi Banten dan Jawa Barat sebagai wilayah utamanya.\nJati diri yang mempersatukan orang Sunda adalah bahasa dan budayanya. Orang Sunda dikenal memiliki sifat optimistis, ramah, sopan, riang dan bersahaja. Orang Portugis mencatat dalam Suma Oriental bahwa orang sunda bersifat jujur dan pemberani. Orang Sunda juga adalah suku bangsa pertama yang melakukan hubungan diplomatik secara sejajar dengan bangsa lain. Sang Hyang Surawisesa atau Raja Samian adalah raja pertama di Nusantara yang melakukan hubungan diplomatik dengan bangsa lain pada abad ke-15 dengan orang Portugis di Malaka. Hasil dari diplomasinya dituangkan dalam Prasasti Perjanjian Sunda-Portugal. Beberapa tokoh Sunda juga menjabat Menteri dan pernah menjadi Wakil Presiden pada kabinet RI.\nDi samping prestasi dalam bidang politik (khususnya pada awal masa kemerdekaan Indonesia) dan ekonomi, prestasi yang cukup membanggakan adalah pada bidang budaya yaitu banyaknya penyanyi, musisi, aktor dan aktris dari etnis Sunda yang memiliki prestasi di tingkat nasional, maupun internasional.</string>
+    <string name="makanan_daerah">Makanan Daerah</string>
+    <string name="rumah_adat">Rumah Adat</string>
+    <string name="kesenian_daerah">Kesenian Daerah</string>
+    <string name="tempat_wisata">Tempat Wisata</string>
+    <string name="angklung">Angklung</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
