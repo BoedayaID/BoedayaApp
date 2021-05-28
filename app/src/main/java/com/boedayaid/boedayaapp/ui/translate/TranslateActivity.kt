@@ -107,6 +107,10 @@ class TranslateActivity : AppCompatActivity() {
             when (state) {
                 TranslateViewModel.TRANSLATE_LOADING -> isTranslating(true)
                 TranslateViewModel.TRANSLATE_DONE -> isTranslating(false)
+                TranslateViewModel.TRANSLATE_ERROR -> {
+                    isTranslating(false)
+                    translateFailed()
+                }
             }
         }
 
@@ -119,6 +123,7 @@ class TranslateActivity : AppCompatActivity() {
         handlerThread.start()
         handler = HandlerCompat.createAsync(handlerThread.looper)
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -148,6 +153,8 @@ class TranslateActivity : AppCompatActivity() {
     }
 
     private fun isTranslating(state: Boolean) {
+        binding.loadingStatus.visibility = View.VISIBLE
+        binding.tvLoadingStatus.text = "Sedang Menerjemahkan"
         if (state) {
             binding.translateStatus.visibility = View.VISIBLE
             binding.translateStatus.startAnimation(openAnimTranslateStatus)
@@ -155,6 +162,17 @@ class TranslateActivity : AppCompatActivity() {
             binding.translateStatus.startAnimation(closeAnimTranslateStatus)
             binding.translateStatus.visibility = View.GONE
         }
+    }
+
+    private fun translateFailed() {
+        binding.loadingStatus.visibility = View.GONE
+        binding.tvLoadingStatus.text = "Gagal menerjemahkan"
+        binding.translateStatus.visibility = View.VISIBLE
+        binding.translateStatus.startAnimation(openAnimTranslateStatus)
+        Handler().postDelayed({
+            binding.translateStatus.startAnimation(closeAnimTranslateStatus)
+            binding.translateStatus.visibility = View.GONE
+        },700)
     }
 
     private fun startRecordAudio() {

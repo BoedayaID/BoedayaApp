@@ -1,5 +1,6 @@
 package com.boedayaid.boedayaapp.ui.translate
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,7 @@ class TranslateViewModel : ViewModel() {
     companion object {
         const val TRANSLATE_LOADING = 1
         const val TRANSLATE_DONE = 2
+        const val TRANSLATE_ERROR = 3
     }
 
     private val translateServices = ApiConfig.provideTranslateService()
@@ -49,11 +51,16 @@ class TranslateViewModel : ViewModel() {
     fun translate(text: String) {
         viewModelScope.launch(Dispatchers.IO) {
             stateTranslate.postValue(TRANSLATE_LOADING)
-            val result = translateServices.translate(text, "id", "su")
-            withContext(Dispatchers.Main) {
-                addChat(result.result, ChatAddress.FROM, false)
+            try {
+                val result = translateServices.translate(text, "id", "su")
+                withContext(Dispatchers.Main) {
+                    addChat(result.result, ChatAddress.FROM, false)
+                }
+                stateTranslate.postValue(TRANSLATE_DONE)
+            } catch (e: Exception) {
+                Log.e("Network Exception", e.message.toString())
+                stateTranslate.postValue(TRANSLATE_ERROR)
             }
-            stateTranslate.postValue(TRANSLATE_DONE)
         }
     }
 

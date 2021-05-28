@@ -1,5 +1,6 @@
 package com.boedayaid.boedayaapp.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,67 +18,72 @@ class DetailViewModel : ViewModel() {
 
     fun getDetailSuku(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = apiServices.getSukuById(id)
+            try {
+                val result = apiServices.getSukuById(id)
 
-            val rumahAdat = result.rumahAdat?.map {
-                DetailSuku.RumahAdat(
-                    it?.id,
-                    it?.sukuId,
-                    it?.namaRumahAdat,
-                    it?.gambar,
-                    it?.deskripsi
+                val rumahAdat = result.rumahAdat?.map {
+                    DetailSuku.RumahAdat(
+                        it?.id,
+                        it?.sukuId,
+                        it?.namaRumahAdat,
+                        it?.gambar,
+                        it?.deskripsi
+                    )
+                }
+
+                val kesenian = result.kesenian?.map {
+                    DetailSuku.Kesenian(
+                        it?.id,
+                        it?.sukuId,
+                        it?.namaKesenian,
+                        it?.deskripsi,
+                        it?.gambar,
+                        it?.kategoriKesenian
+                    )
+                }
+
+                val makanan = result.makanan?.map {
+                    DetailSuku.Makanan(
+                        it?.id,
+                        it?.sukuId,
+                        it?.namaMakanan,
+                        it?.gambar,
+                        it?.deskripsi
+                    )
+                }
+
+                val tempatWisata = result.tempatWisata?.map {
+                    DetailSuku.TempatWisata(
+                        it?.id,
+                        it?.sukuId,
+                        it?.namaTempat,
+                        it?.gambar,
+                        it?.alamat,
+                        it?.deskripsi,
+                        it?.mapUrl
+                    )
+                }
+
+                val detailSuku = DetailSuku(
+                    result.id,
+                    result.provinsiId,
+                    result.namaSuku,
+                    result.gambar,
+                    result.sejarah,
+                    result.bahasa,
+                    result.aksaraKuno,
+                    result.aksaraTranslate,
+                    rumahAdat,
+                    kesenian,
+                    makanan,
+                    tempatWisata
                 )
+
+                _detailSuku.postValue(detailSuku)
+            } catch (e: Exception) {
+                Log.e("Network Exception", e.message.toString())
+
             }
-
-            val kesenian = result.kesenian?.map {
-                DetailSuku.Kesenian(
-                    it?.id,
-                    it?.sukuId,
-                    it?.namaKesenian,
-                    it?.deskripsi,
-                    it?.gambar,
-                    it?.kategoriKesenian
-                )
-            }
-
-            val makanan = result.makanan?.map {
-                DetailSuku.Makanan(
-                    it?.id,
-                    it?.sukuId,
-                    it?.namaMakanan,
-                    it?.gambar,
-                    it?.deskripsi
-                )
-            }
-
-            val tempatWisata = result.tempatWisata?.map {
-                DetailSuku.TempatWisata(
-                    it?.id,
-                    it?.sukuId,
-                    it?.namaTempat,
-                    it?.gambar,
-                    it?.alamat,
-                    it?.deskripsi,
-                    it?.mapUrl
-                )
-            }
-
-            val detailSuku = DetailSuku(
-                result.id,
-                result.provinsiId,
-                result.namaSuku,
-                result.gambar,
-                result.sejarah,
-                result.bahasa,
-                result.aksaraKuno,
-                result.aksaraTranslate,
-                rumahAdat,
-                kesenian,
-                makanan,
-                tempatWisata
-            )
-
-            _detailSuku.postValue(detailSuku)
         }
     }
 }

@@ -51,11 +51,13 @@
         tools:visibility="visible">
 
         <ProgressBar
+            android:id="@+id/loading_status"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="30dp"
             android:layout_height="30dp" />
 
         <TextView
+            android:id="@+id/tv_loading_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

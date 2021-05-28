@@ -1,5 +1,6 @@
 package com.boedayaid.boedayaapp.ui.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,33 +35,42 @@ class HomeViewModel : ViewModel() {
 
     private fun getListIslandFromServer() {
         viewModelScope.launch(Dispatchers.IO) {
-            val resultIsland = api.getAllIsland()
+            try {
+                val resultIsland = api.getAllIsland()
 
-            val result = resultIsland.island.map { islandItem ->
-                Island(islandItem.id, islandItem.name)
+                val result = resultIsland.island.map { islandItem ->
+                    Island(islandItem.id, islandItem.name)
+                }
+
+                _listIsland.postValue(result)
+            } catch (e: Exception) {
+                Log.e("Network Exception", e.message.toString())
             }
 
-            _listIsland.postValue(result)
         }
     }
 
     fun getListProvince(islandId: Int) {
         viewModelScope.launch {
+            try {
+                val resultProvince: ProvinceResponse = if (islandId == DEFAULT_QUERY) {
+                    api.getAllProvince()
+                } else {
+                    api.getProvinceByIsland(islandId)
+                }
 
-            val resultProvince: ProvinceResponse = if (islandId == DEFAULT_QUERY) {
-                api.getAllProvince()
-            } else {
-                api.getProvinceByIsland(islandId)
+                val result = resultProvince.province.map { provinceItem ->
+                    Province(
+                        provinceItem.provinceId,
+                        provinceItem.provinceName,
+                        provinceItem.provinceImage
+                    )
+                }
+                _listProvince.postValue(result)
+            } catch (e: Exception) {
+                Log.e("Network Exception", e.message.toString())
             }
 
-            val result = resultProvince.province.map { provinceItem ->
-                Province(
-                    provinceItem.provinceId,
-                    provinceItem.provinceName,
-                    provinceItem.provinceImage
-                )
-            }
-            _listProvince.postValue(result)
         }
     }
 }
