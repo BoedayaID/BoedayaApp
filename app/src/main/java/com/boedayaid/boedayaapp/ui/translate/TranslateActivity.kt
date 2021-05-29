@@ -2,11 +2,9 @@ package com.boedayaid.boedayaapp.ui.translate
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.media.AudioRecord
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
@@ -14,20 +12,19 @@ import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.os.HandlerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boedayaid.boedayaapp.R
 import com.boedayaid.boedayaapp.data.model.Chat
 import com.boedayaid.boedayaapp.data.model.ChatAddress
 import com.boedayaid.boedayaapp.databinding.ActivityTranslateBinding
-import org.tensorflow.lite.support.label.Category
-import org.tensorflow.lite.task.audio.classifier.AudioClassifier
+import com.github.squti.androidwaverecorder.WaveRecorder
+import java.io.File
+
 
 class TranslateActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_RECORD_AUDIO = 1337
-        private const val MODEL_FILE = "model-metadata-new.tflite"
     }
 
     private val openAnim: Animation by lazy {
@@ -44,6 +41,13 @@ class TranslateActivity : AppCompatActivity() {
         AnimationUtils.loadAnimation(this, R.anim.close_anim)
     }
 
+    private val openAnimPredictingStatus: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.open_anim)
+    }
+    private val closeAnimPredictingStatus: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.close_anim)
+    }
+
     private var isMicOpen = false
     private var handlerAnimation = Handler()
 
@@ -54,11 +58,8 @@ class TranslateActivity : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private var listChat = mutableListOf<Chat>()
 
-
-    private var audioClassifier: AudioClassifier? = null
-    private var audioRecord: AudioRecord? = null
-    private lateinit var handler: Handler  // background thread handler to run classification
-    private var resultRecognition = emptyList<Category>()
+    private var filePath: String = ""
+    private lateinit var wavRecorder: WaveRecorder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,13 +99,19 @@ class TranslateActivity : AppCompatActivity() {
             startRecordAudio()
             Handler().postDelayed({
                 stopRecordAudio()
-            }, 3000)
+            }, 2000)
 
             isMicOpen = !isMicOpen
         }
 
         viewModel.stateTranslate.observe(this) { state ->
             when (state) {
+                TranslateViewModel.PREDICT_LOADING -> isPredicting(true)
+                TranslateViewModel.PREDICT_DONE -> isPredicting(false)
+                TranslateViewModel.PREDICT_ERROR -> {
+                    isPredicting(false)
+                    predictingFailed()
+                }
                 TranslateViewModel.TRANSLATE_LOADING -> isTranslating(true)
                 TranslateViewModel.TRANSLATE_DONE -> isTranslating(false)
                 TranslateViewModel.TRANSLATE_ERROR -> {
@@ -117,11 +124,6 @@ class TranslateActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestMicrophonePermission()
         }
-
-        // Create a handler to run classification in a background thread
-        val handlerThread = HandlerThread("backgroundThread")
-        handlerThread.start()
-        handler = HandlerCompat.createAsync(handlerThread.looper)
     }
 
 
@@ -152,6 +154,67 @@ class TranslateActivity : AppCompatActivity() {
         }
     }
 
+    private fun startRecordAudio() {
+        startAnim()
+
+        val path = this.getExternalFilesDir("/")?.absolutePath
+        val fileName = "Recording_${System.currentTimeMillis()}.wav"
+        filePath = "$path/$fileName"
+
+        try {
+            wavRecorder = WaveRecorder(filePath)
+            wavRecorder.noiseSuppressorActive = true
+            wavRecorder.waveConfig.sampleRate = 44100
+            wavRecorder.startRecording()
+
+        } catch (e: Exception) {
+            Log.e("ErrorRecording", e.message.toString())
+        }
+    }
+
+    private fun stopRecordAudio() {
+        stopAnim()
+
+        wavRecorder.stopRecording()
+        viewModel.predictAudio(File(filePath))
+    }
+
+    private var runnableAnimationRipple = object : Runnable {
+        override fun run() {
+            binding.rippleAnim.animate().scaleX(3f).scaleY(3f).alpha(0f)
+                .setDuration(700)
+                .withEndAction {
+                    binding.rippleAnim.scaleX = 1f
+                    binding.rippleAnim.scaleY = 1f
+                    binding.rippleAnim.alpha = 1f
+                }
+
+            handlerAnimation.postDelayed(this, 800)
+        }
+
+    }
+
+    private fun startAnim() {
+        binding.fabSpeech.isEnabled = false
+
+        binding.fabSpeechAnimation.visibility = View.VISIBLE
+        binding.rippleAnim.visibility = View.VISIBLE
+        binding.fabSpeechAnimation.startAnimation(openAnim)
+        binding.rippleAnim.startAnimation(openAnim)
+
+        runnableAnimationRipple.run()
+    }
+
+    private fun stopAnim() {
+        binding.fabSpeech.isEnabled = true
+
+        binding.fabSpeechAnimation.startAnimation(closeAnim)
+        binding.rippleAnim.startAnimation(closeAnim)
+        binding.fabSpeechAnimation.visibility = View.GONE
+        binding.rippleAnim.visibility = View.GONE
+        handlerAnimation.removeCallbacks(runnableAnimationRipple)
+    }
+
     private fun isTranslating(state: Boolean) {
         binding.loadingStatus.visibility = View.VISIBLE
         binding.tvLoadingStatus.text = "Sedang Menerjemahkan"
@@ -172,109 +235,29 @@ class TranslateActivity : AppCompatActivity() {
         Handler().postDelayed({
             binding.translateStatus.startAnimation(closeAnimTranslateStatus)
             binding.translateStatus.visibility = View.GONE
-        },700)
+        }, 700)
     }
 
-    private fun startRecordAudio() {
-        binding.fabSpeech.isEnabled = false
-
-        binding.fabSpeechAnimation.visibility = View.VISIBLE
-        binding.rippleAnim.visibility = View.VISIBLE
-        binding.fabSpeechAnimation.startAnimation(openAnim)
-        binding.rippleAnim.startAnimation(openAnim)
-
-        runnableAnimationRipple.run()
-
-        startRecognition()
-    }
-
-
-    private fun stopRecordAudio() {
-        binding.fabSpeech.isEnabled = true
-
-        binding.fabSpeechAnimation.startAnimation(closeAnim)
-        binding.rippleAnim.startAnimation(closeAnim)
-        binding.fabSpeechAnimation.visibility = View.GONE
-        binding.rippleAnim.visibility = View.GONE
-
-        handlerAnimation.removeCallbacks(runnableAnimationRipple)
-
-        stopRecognition()
-    }
-
-    private var runnableAnimationRipple = object : Runnable {
-        override fun run() {
-            binding.rippleAnim.animate().scaleX(3f).scaleY(3f).alpha(0f)
-                .setDuration(700)
-                .withEndAction {
-                    binding.rippleAnim.scaleX = 1f
-                    binding.rippleAnim.scaleY = 1f
-                    binding.rippleAnim.alpha = 1f
-                }
-
-            handlerAnimation.postDelayed(this, 800)
+    private fun isPredicting(state: Boolean) {
+        binding.loadingStatus.visibility = View.VISIBLE
+        binding.tvLoadingStatus.text = "Sedang memprediksi suara"
+        if (state) {
+            binding.translateStatus.visibility = View.VISIBLE
+            binding.translateStatus.startAnimation(openAnimPredictingStatus)
+        } else {
+            binding.translateStatus.startAnimation(closeAnimPredictingStatus)
+            binding.translateStatus.visibility = View.GONE
         }
-
     }
 
-    private fun startRecognition() {
-        // If the audio classifier is initialized and running, do nothing.
-        if (audioClassifier != null) return
-
-        // Initialize the audio classifier
-        val classifier = AudioClassifier.createFromFile(this, MODEL_FILE)
-        val audioTensor = classifier.createInputTensorAudio()
-
-        // Initialize the audio recorder and start recording
-        val record = classifier.createAudioRecord()
-        record.startRecording()
-
-        val format = classifier.requiredTensorAudioFormat
-        val recorderSpecs = "Number Of Channels: ${format.channels}\n" +
-                "Sample Rate: ${format.sampleRate}"
-        Log.d("Recognition", recorderSpecs)
-
-        val startRecordTime = System.currentTimeMillis()
-        Log.d("Recognition", "start record $startRecordTime")
-        val runnableVoice = Runnable {
-            val startTime = System.currentTimeMillis()
-            Log.d("Recognition", "start classify $startTime")
-
-            // Load the latest audio sample
-            audioTensor.load(record)
-            val result = classifier.classify(audioTensor)
-
-            resultRecognition = result[0].categories
-
-            val finishTime = System.currentTimeMillis()
-            Log.d("Recognition", "end classify $finishTime")
-
-        }
-
-        // Start the classification after 2s taking record, and extra 1s to classify
-        handler.postDelayed(runnableVoice, 2000L)
-
-        // Save the instances we just created for use later
-        audioClassifier = classifier
-        audioRecord = record
-    }
-
-    private fun stopRecognition() {
-        handler.removeCallbacksAndMessages(null)
-        // stop recording
-        audioRecord?.stop()
-        audioRecord = null
-        audioClassifier = null
-
-        val endRecordTime = System.currentTimeMillis()
-        Log.d("Recognition", "end record $endRecordTime")
-
-        // sent highest prediction to view model
-        val resultHighest = resultRecognition.sortedByDescending { it.score }[0]
-        viewModel.addChat(resultHighest.label, ChatAddress.TO, false)
-        viewModel.translate(resultHighest.label)
-
-        Log.d("Recognition", "result : $resultRecognition")
-        Log.d("Recognition", "highest result = $resultHighest")
+    private fun predictingFailed() {
+        binding.loadingStatus.visibility = View.GONE
+        binding.tvLoadingStatus.text = "Gagal memprediksi suara"
+        binding.translateStatus.visibility = View.VISIBLE
+        binding.translateStatus.startAnimation(openAnimPredictingStatus)
+        Handler().postDelayed({
+            binding.translateStatus.startAnimation(closeAnimPredictingStatus)
+            binding.translateStatus.visibility = View.GONE
+        }, 700)
     }
 }

@@ -9,6 +9,9 @@ import com.boedayaid.boedayaapp.data.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class TranslateViewModel : ViewModel() {
 
@@ -16,9 +19,13 @@ class TranslateViewModel : ViewModel() {
         const val TRANSLATE_LOADING = 1
         const val TRANSLATE_DONE = 2
         const val TRANSLATE_ERROR = 3
+        const val PREDICT_LOADING = 4
+        const val PREDICT_DONE = 5
+        const val PREDICT_ERROR = 6
     }
 
     private val translateServices = ApiConfig.provideTranslateService()
+    private val aiServices = ApiConfig.provideAiService()
 
     private val _listChat = MutableLiveData<MutableList<Chat>>(
         mutableListOf(
@@ -27,7 +34,7 @@ class TranslateViewModel : ViewModel() {
     )
     val listChat get() = _listChat
 
-    val stateTranslate = MutableLiveData<Int>(0)
+    val stateTranslate = MutableLiveData(0)
 
 
     fun addChat(text: String, type: ChatAddress, convertAksara: Boolean) {
@@ -48,6 +55,27 @@ class TranslateViewModel : ViewModel() {
         _listChat.notifyObserver()
     }
 
+    fun predictAudio(file: File) {
+        stateTranslate.postValue(PREDICT_LOADING)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                Log.d("FILE NAME", file.name)
+                val requestBody = file.asRequestBody("audio/wav".toMediaTypeOrNull())
+                val result = aiServices.predictAudio(
+                    requestBody
+                )
+                withContext(Dispatchers.Main) {
+                    addChat(result.keyword, ChatAddress.TO, false)
+                }
+                translate(result.keyword)
+                stateTranslate.postValue(PREDICT_DONE)
+            } catch (e: Exception) {
+                Log.d("Retrofit Exception", e.message.toString())
+                stateTranslate.postValue(PREDICT_ERROR)
+            }
+        }
+    }
+
     fun translate(text: String) {
         viewModelScope.launch(Dispatchers.IO) {
             stateTranslate.postValue(TRANSLATE_LOADING)
@@ -64,7 +92,7 @@ class TranslateViewModel : ViewModel() {
         }
     }
 
-    fun convertAksara(text: String): String {
+    private fun convertAksara(text: String): String {
         val unisunda = mutableMapOf<String, String>()
 
         // panungtung +

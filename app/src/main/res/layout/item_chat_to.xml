@@ -17,6 +17,6 @@
         android:paddingStart="25dp"
         android:paddingEnd="15dp"
         android:text="@string/dummy_chat"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
 </LinearLayout>

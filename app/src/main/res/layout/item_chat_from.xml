@@ -17,7 +17,7 @@
         android:textSize="14sp"
         android:paddingEnd="25dp"
         android:text="@string/dummy_chat"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:textColor="@color/black"
