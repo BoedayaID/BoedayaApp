@@ -37,8 +37,8 @@ class TranslateViewModel : ViewModel() {
     val stateTranslate = MutableLiveData(0)
 
 
-    fun addChat(text: String, type: ChatAddress, convertAksara: Boolean) {
-        val chat = if (!convertAksara) {
+    fun addChat(text: String, type: ChatAddress, isAksara: Boolean) {
+        val chat = if (!isAksara) {
             when (type) {
                 ChatAddress.TO -> {
                     ChatTo(1, text)

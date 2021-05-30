@@ -1,14 +1,19 @@
 package com.boedayaid.boedayaapp.ui.translate
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -48,7 +53,6 @@ class TranslateActivity : AppCompatActivity() {
         AnimationUtils.loadAnimation(this, R.anim.close_anim)
     }
 
-    private var isMicOpen = false
     private var handlerAnimation = Handler()
 
     private lateinit var binding: ActivityTranslateBinding
@@ -78,30 +82,51 @@ class TranslateActivity : AppCompatActivity() {
         binding.tvBahasa.text = "${resources.getString(R.string.translate_bahasa)} $sukuName"
 
         chatAdapter = ChatAdapter()
-
+        chatAdapter.setOnTranslate { position ->
+            viewModel.addChat(listChat[position].text, ChatAddress.FROM, true)
+        }
+        binding.rvChat.apply {
+            adapter = chatAdapter
+            layoutManager = LinearLayoutManager(this@TranslateActivity)
+            setHasFixedSize(true)
+        }
         viewModel.listChat.observe(this) { chats ->
             listChat = chats
             chatAdapter.setList(listChat)
             binding.rvChat.smoothScrollToPosition(listChat.lastIndex)
         }
 
-        binding.rvChat.apply {
-            adapter = chatAdapter
-            layoutManager = LinearLayoutManager(this@TranslateActivity)
-            setHasFixedSize(true)
-        }
+        binding.edtChat.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        chatAdapter.setOnTranslate { position ->
-            viewModel.addChat(listChat[position].text, ChatAddress.FROM, true)
-        }
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null && s.isNotEmpty()) {
+                    binding.fabSpeech.setImageResource(R.drawable.ic_send)
+                } else {
+                    binding.fabSpeech.setImageResource(R.drawable.ic_mic)
+                }
+            }
+        })
 
         binding.fabSpeech.setOnClickListener {
-            startRecordAudio()
-            Handler().postDelayed({
-                stopRecordAudio()
-            }, 2000)
+            if (binding.edtChat.text.isEmpty()) {
+                startRecordAudio()
+                Handler().postDelayed({
+                    stopRecordAudio()
+                }, 2000)
+            } else {
+                val text = binding.edtChat.text.toString()
+                viewModel.addChat(text, ChatAddress.TO, false)
+                viewModel.translate(text)
 
-            isMicOpen = !isMicOpen
+                hideKeyboard()
+                binding.edtChat.text.clear()
+                binding.edtChat.clearFocus()
+            }
         }
 
         viewModel.stateTranslate.observe(this) { state ->
@@ -259,5 +284,14 @@ class TranslateActivity : AppCompatActivity() {
             binding.translateStatus.startAnimation(closeAnimPredictingStatus)
             binding.translateStatus.visibility = View.GONE
         }, 700)
+    }
+
+    private fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    private fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
