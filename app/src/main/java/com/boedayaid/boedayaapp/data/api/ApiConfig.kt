@@ -15,7 +15,7 @@ object ApiConfig {
 
     fun provideApiService(): ApiServices {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://boedaya.herokuapp.com/")
+            .baseUrl("https://stunning-net-313507.uc.r.appspot.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(provideOkHttpClient())
             .build()

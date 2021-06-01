@@ -189,7 +189,7 @@ class TranslateActivity : AppCompatActivity() {
         try {
             wavRecorder = WaveRecorder(filePath)
             wavRecorder.noiseSuppressorActive = true
-            wavRecorder.waveConfig.sampleRate = 44100
+            wavRecorder.waveConfig.sampleRate = 22050
             wavRecorder.startRecording()
 
         } catch (e: Exception) {
