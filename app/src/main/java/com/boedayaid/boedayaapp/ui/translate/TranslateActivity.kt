@@ -117,7 +117,7 @@ class TranslateActivity : AppCompatActivity() {
                 startRecordAudio()
                 Handler().postDelayed({
                     stopRecordAudio()
-                }, 2000)
+                }, 3000)
             } else {
                 val text = binding.edtChat.text.toString()
                 viewModel.addChat(text, ChatAddress.TO, false)
