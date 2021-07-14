@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.register.RegisterActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:elevation="4dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/register"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/img_indonesia_map"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_peta_indonesia" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/il_username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_indonesia_map"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="40dp"
+        android:hint="@string/username"
+        app:placeholderText="Boedaya team">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/il_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/il_username"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/email"
+        app:placeholderText="user@boedaya.id">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/il_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/il_email"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/password"
+        app:placeholderText="password anda">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_register"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/il_password"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/register" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_register"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="3dp"
+        android:text="- or -"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv2"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/login" />
+
+</RelativeLayout>

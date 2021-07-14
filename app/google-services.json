@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "768709509591",
+    "project_id": "new-features-2f023",
+    "storage_bucket": "new-features-2f023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768709509591:android:855e3dda9e6faae9198b92",
+        "android_client_info": {
+          "package_name": "com.boedayaid.boedayaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768709509591-98kvunngjqc7a91b3q7tohugmt4kjj4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLI9PVFX3IoWloODkxK_Pqz-UquIBYrwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768709509591-98kvunngjqc7a91b3q7tohugmt4kjj4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

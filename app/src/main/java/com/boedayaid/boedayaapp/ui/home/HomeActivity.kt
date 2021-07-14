@@ -1,5 +1,6 @@
 package com.boedayaid.boedayaapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import com.boedayaid.boedayaapp.data.model.Island
 import com.boedayaid.boedayaapp.data.model.Province
 import com.boedayaid.boedayaapp.databinding.ActivityHomeBinding
 import com.boedayaid.boedayaapp.ui.home.bottomsheet.BottomSheetFragment
+import com.boedayaid.boedayaapp.ui.profile.ProfileActivity
 import com.google.android.material.chip.Chip
 import kotlin.math.abs
 
@@ -96,26 +98,32 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btnProfile.setOnClickListener {
+            Intent(applicationContext, ProfileActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        if (bottomSheet.isVisible){
+        if (bottomSheet.isVisible) {
             bottomSheet.dismiss()
         }
     }
 
-    private fun showLoadingCarousel(state : Boolean){
-        if(state){
+    private fun showLoadingCarousel(state: Boolean) {
+        if (state) {
             binding.loading.visibility = View.VISIBLE
             binding.carouselProvince.visibility = View.GONE
-        }else{
+        } else {
             binding.loading.visibility = View.GONE
             binding.carouselProvince.visibility = View.VISIBLE
         }
     }
 
-    private fun showChipIsland(){
+    private fun showChipIsland() {
         binding.chipGroupIndoIslands.visibility = View.VISIBLE
     }
 }

@@ -26,4 +26,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recognition_status">Recognition Status</string>
     <string name="ketik_untuk_menerjemahkan">Ketik untuk menerjemahkan</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="logout">Logout</string>
 </resources>
