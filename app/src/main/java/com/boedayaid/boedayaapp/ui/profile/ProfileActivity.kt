@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.boedayaid.boedayaapp.R
 import com.boedayaid.boedayaapp.databinding.ActivityProfileBinding
 import com.boedayaid.boedayaapp.ui.login.LoginActivity
+import com.boedayaid.boedayaapp.ui.profile.tab_layout.TabAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -41,6 +43,16 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.userProfile.observe(this) {
             binding.tvUsername.text = it.username
         }
+
+        val tabAdapter = TabAdapter(this)
+        binding.pager.adapter = tabAdapter
+
+        TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Bucket"
+                1 -> tab.text = "History"
+            }
+        }.attach()
     }
 
     override fun onStart() {
@@ -59,8 +71,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.btn_logout ->{
+        return when (item.itemId) {
+            R.id.btn_logout -> {
                 viewModel.logout()
                 finish()
                 return true

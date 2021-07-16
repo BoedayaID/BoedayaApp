@@ -2,6 +2,7 @@ package com.boedayaid.boedayaapp.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.boedayaid.boedayaapp.ui.detail.adapter.KesenianAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.MakananAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.RumahAdatAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.TempatWisataAdapter
+import com.boedayaid.boedayaapp.ui.detail.infodialog.ActionDialogFragment
 import com.boedayaid.boedayaapp.ui.detail.infodialog.InfoDialogFragment
 import com.boedayaid.boedayaapp.ui.translate.TranslateActivity
 import com.bumptech.glide.Glide
@@ -108,12 +110,8 @@ class DetailActivity : AppCompatActivity() {
         tempatWisataAdapter = TempatWisataAdapter()
         tempatWisataAdapter.setOnClick { position ->
             val wisata = tempatWisataDaerah[position]
-            val infoDialog = InfoDialogFragment.newInstance(
-                wisata.gambar!!,
-                wisata.namaTempat!!,
-                wisata.deskripsi!!
-            )
-            infoDialog.show(supportFragmentManager, "Info Dialog")
+            val actionDialog = ActionDialogFragment.newInstance(wisata)
+            actionDialog.show(supportFragmentManager, "Info Dialog")
         }
         binding.rvTempatWisata.apply {
             adapter = tempatWisataAdapter
