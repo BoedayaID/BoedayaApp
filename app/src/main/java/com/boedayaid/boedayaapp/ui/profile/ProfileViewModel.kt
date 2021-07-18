@@ -24,7 +24,13 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun logout(){
+    fun changeImageProfile(byteArray: ByteArray, uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            FirebaseAuthService.changeImageProfile(byteArray, uid)
+        }
+    }
+
+    fun logout() {
         FirebaseAuthService.logout()
     }
 }
