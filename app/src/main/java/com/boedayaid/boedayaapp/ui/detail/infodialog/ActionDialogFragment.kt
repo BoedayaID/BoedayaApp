@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.boedayaid.boedayaapp.data.model.DetailSuku
@@ -37,17 +38,17 @@ class ActionDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         tempatWisata = arguments?.getParcelable(DATA)!!
 
-        viewModel.checkOnBucket(user?.uid!!, tempatWisata)
-        viewModel.checkOnHistory(user?.uid!!, tempatWisata)
+        if (user != null) {
+            viewModel.checkOnBucket(user?.uid!!, tempatWisata)
+            viewModel.checkOnHistory(user?.uid!!, tempatWisata)
+        }
 
         viewModel.isOnBucket.observe(viewLifecycleOwner) {
-            binding.btnBucket.visibility = View.VISIBLE
             binding.btnBucket.isChecked = it
             stateBucket = it
         }
 
         viewModel.isOnHistory.observe(viewLifecycleOwner) {
-            binding.btnHistory.visibility = View.VISIBLE
             binding.btnHistory.isChecked = it
             stateHistory = it
         }
@@ -67,6 +68,13 @@ class ActionDialogFragment : DialogFragment() {
                 } else {
                     viewModel.setOnBucket(user?.uid!!, tempatWisata)
                 }
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Anda harus Login terlebih dahulu",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.btnBucket.isChecked = false
             }
         }
         binding.btnHistory.setOnClickListener {
@@ -76,6 +84,13 @@ class ActionDialogFragment : DialogFragment() {
                 } else {
                     viewModel.setOnHistory(user?.uid!!, tempatWisata)
                 }
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Anda harus Login terlebih dahulu",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.btnBucket.isChecked = false
             }
         }
     }

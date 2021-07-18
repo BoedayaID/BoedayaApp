@@ -32,4 +32,6 @@
     <string name="register">Register</string>
     <string name="username">Username</string>
     <string name="logout">Logout</string>
+    <string name="detail_tempat_wisata">Detail Tempat Wisata</string>
+    <string name="alamat">Kota Bandung</string>
 </resources>
