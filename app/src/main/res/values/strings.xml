@@ -26,4 +26,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recognition_status">Recognition Status</string>
     <string name="ketik_untuk_menerjemahkan">Ketik untuk menerjemahkan</string>
+    <string name="aksara_jawa">Aksara Jawa</string>
+    <string name="btn_coba">Coba</string>
+    <string name="belajar_aksara">Belajar Aksara</string>
 </resources>

@@ -3,6 +3,7 @@ package com.boedayaid.boedayaapp.ui.detail
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,8 +14,10 @@ import com.boedayaid.boedayaapp.ui.detail.adapter.MakananAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.RumahAdatAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.TempatWisataAdapter
 import com.boedayaid.boedayaapp.ui.detail.infodialog.InfoDialogFragment
+import com.boedayaid.boedayaapp.ui.detail_aksara.DetailAksaraActivity
 import com.boedayaid.boedayaapp.ui.translate.TranslateActivity
 import com.bumptech.glide.Glide
+import java.util.*
 
 class DetailActivity : AppCompatActivity() {
 
@@ -143,17 +146,71 @@ class DetailActivity : AppCompatActivity() {
             }
 
             showLoading(false)
-            if (detailSuku.aksaraTranslate == 0) {
-                binding.fabTranslate.visibility = View.GONE
-            } else {
-                binding.fabTranslate.visibility = View.VISIBLE
-            }
+            fabFeature(detailSuku.namaSuku.toString())
         }
+    }
 
-        binding.fabTranslate.setOnClickListener {
-            Intent(this, TranslateActivity::class.java).also {
-                it.putExtra("SUKU_NAME", "Sunda")
-                startActivity(it)
+    private fun fabFeature(namaSuku: String) {
+        if (namaSuku.lowercase(Locale.getDefault()) == "sunda") {
+            binding.apply {
+                fabTranslate.visibility = View.VISIBLE
+                fabBelajarAksara.visibility = View.VISIBLE
+
+                fabTranslate.setOnClickListener {
+                    Intent(applicationContext, TranslateActivity::class.java).also {
+                        it.putExtra("SUKU_NAME", "Sunda")
+                        startActivity(it)
+                    }
+                }
+
+                fabBelajarAksara.setOnClickListener {
+                    Toast.makeText(
+                        applicationContext,
+                        "Fitur Belum tersedia di suku ini !",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else if (namaSuku.lowercase(Locale.getDefault()) == "jawa") {
+            binding.apply {
+                fabTranslate.visibility = View.VISIBLE
+                fabBelajarAksara.visibility = View.VISIBLE
+
+                fabTranslate.setOnClickListener {
+                    Toast.makeText(
+                        applicationContext,
+                        "Fitur Belum tersedia di suku ini !",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                fabBelajarAksara.setOnClickListener {
+                    Intent(applicationContext, DetailAksaraActivity::class.java).also {
+                        it.putExtra("SUKU_NAME", "Jawa")
+                        startActivity(it)
+                    }
+                }
+            }
+        } else {
+            binding.apply {
+                fabTranslate.visibility = View.VISIBLE
+                fabBelajarAksara.visibility = View.VISIBLE
+
+                fabTranslate.setOnClickListener {
+                    Toast.makeText(
+                        applicationContext,
+                        "Fitur Belum tersedia di suku ini !",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                fabBelajarAksara.setOnClickListener {
+                    Toast.makeText(
+                        applicationContext,
+                        "Fitur Belum tersedia di suku ini !",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -163,7 +220,6 @@ class DetailActivity : AppCompatActivity() {
             binding.apply {
                 loading.visibility = View.VISIBLE
                 imgSuku.visibility = View.GONE
-                fabTranslate.visibility = View.GONE
                 tvSukuName.visibility = View.GONE
                 sejarah.visibility = View.GONE
                 tvSejarah.visibility = View.GONE
@@ -180,7 +236,6 @@ class DetailActivity : AppCompatActivity() {
             binding.apply {
                 loading.visibility = View.GONE
                 imgSuku.visibility = View.VISIBLE
-                fabTranslate.visibility = View.VISIBLE
                 tvSukuName.visibility = View.VISIBLE
                 sejarah.visibility = View.VISIBLE
                 tvSejarah.visibility = View.VISIBLE

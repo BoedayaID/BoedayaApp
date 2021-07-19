@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoedayaID"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.detail.SplashToDetailActivity"/>
+        <activity android:name=".ui.draw_aksara.DrawActivity"></activity>
+        <activity android:name=".ui.detail_aksara.DetailAksaraActivity" />
+        <activity android:name=".ui.detail.SplashToDetailActivity" />
         <activity android:name=".ui.translate.TranslateActivity" />
         <activity android:name=".ui.detail.DetailActivity" />
         <activity
