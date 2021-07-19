@@ -164,11 +164,10 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 fabBelajarAksara.setOnClickListener {
-                    Toast.makeText(
-                        applicationContext,
-                        "Fitur Belum tersedia di suku ini !",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Intent(applicationContext, DetailAksaraActivity::class.java).also {
+                        it.putExtra("SUKU_NAME", "Sunda")
+                        startActivity(it)
+                    }
                 }
             }
         } else if (namaSuku.lowercase(Locale.getDefault()) == "jawa") {

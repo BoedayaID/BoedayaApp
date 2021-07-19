@@ -12,13 +12,14 @@ import com.boedayaid.boedayaapp.ui.draw_aksara.DrawActivity
 class DetailAksaraActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailAksaraBinding
-
     private lateinit var aksaraAdapter: AksaraAdapter
+    private lateinit var sukuName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailAksaraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sukuName = intent.getStringExtra("SUKU_NAME").toString()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
@@ -28,10 +29,23 @@ class DetailAksaraActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.tvTitle.text = "Aksara $sukuName"
+
         aksaraAdapter = AksaraAdapter()
-        aksaraAdapter.setList(listAksaraJawa)
+        when (sukuName) {
+            "Sunda" -> {
+                aksaraAdapter.setList(listAksaraSunda)
+            }
+            "Jawa" -> {
+                aksaraAdapter.setList(listAksaraJawa)
+            }
+            else -> {
+                aksaraAdapter.setList(emptyList())
+            }
+        }
         aksaraAdapter.setOnClick { aksara ->
             Intent(applicationContext, DrawActivity::class.java).also {
+                it.putExtra("SUKU_NAME", sukuName)
                 it.putExtra("EXTRA_DATA", aksara)
                 startActivity(it)
             }
@@ -66,5 +80,26 @@ class DetailAksaraActivity : AppCompatActivity() {
         Aksara("Ba", R.drawable.img_aksara_ba),
         Aksara("Tha", R.drawable.img_aksara_tha),
         Aksara("Nga", R.drawable.img_aksara_nga),
+    )
+
+    val listAksaraSunda = listOf(
+        Aksara("Ka", R.drawable.img_aksara_sunda_ka),
+        Aksara("Ga", R.drawable.img_aksara_sunda_ga),
+        Aksara("Nga", R.drawable.img_aksara_sunda_nga),
+        Aksara("Ca", R.drawable.img_aksara_sunda_ca),
+        Aksara("Ja", R.drawable.img_aksara_sunda_ja),
+        Aksara("Nya", R.drawable.img_aksara_sunda_nya),
+        Aksara("Ta", R.drawable.img_aksara_sunda_ta),
+        Aksara("Da", R.drawable.img_aksara_sunda_da),
+        Aksara("Na", R.drawable.img_aksara_sunda_na),
+        Aksara("Pa", R.drawable.img_aksara_sunda_pa),
+        Aksara("Ba", R.drawable.img_aksara_sunda_ba),
+        Aksara("Ma", R.drawable.img_aksara_sunda_ma),
+        Aksara("Ya", R.drawable.img_aksara_sunda_ya),
+        Aksara("Ra", R.drawable.img_aksara_sunda_ra),
+        Aksara("La", R.drawable.img_aksara_sunda_la),
+        Aksara("Wa", R.drawable.img_aksara_sunda_wa),
+        Aksara("Sa", R.drawable.img_aksara_sunda_sa),
+        Aksara("Ha", R.drawable.img_aksara_sunda_ha),
     )
 }
