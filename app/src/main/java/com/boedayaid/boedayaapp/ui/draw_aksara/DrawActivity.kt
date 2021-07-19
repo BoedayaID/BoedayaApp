@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -63,6 +64,7 @@ class DrawActivity : AppCompatActivity() {
                 DrawViewModel.RESULT_WRONG -> {
                     binding.loading.visibility = View.GONE
                     binding.tvResult.visibility = View.VISIBLE
+                    binding.tvResult.setTextColor(Color.RED)
                     binding.tvResult.text =
                         "Maaf, aksara yang anda gambar terprediksi ${state["actual_result"]}, silahkan coba lagi"
                 }
@@ -70,7 +72,7 @@ class DrawActivity : AppCompatActivity() {
                     binding.loading.visibility = View.GONE
                     binding.tvResult.visibility = View.VISIBLE
                     binding.tvResult.text =
-                        "Benar, anda sudah bisa menggabar aksara ${state["actual_result"]}"
+                        "Benar, anda sudah bisa menggambar aksara ${state["actual_result"]}"
                 }
                 else -> {
                     binding.loading.visibility = View.GONE

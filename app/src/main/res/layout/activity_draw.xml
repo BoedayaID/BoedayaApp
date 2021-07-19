@@ -53,50 +53,52 @@
         android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_delete"
+        android:layout_above="@id/result"
         android:layout_below="@id/toolbar"
-        android:layout_marginVertical="10dp"
         android:background="@color/white" />
 
     <Button
         android:id="@+id/btn_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_check"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="24dp"
+
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@android:color/holo_red_light"
-        android:text="Delete" />
+        android:text="Hapus" />
 
     <Button
         android:id="@+id/btn_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/result"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginHorizontal="20dp"
-        android:text="Check" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@id/btn_delete"
+        android:text="Cek Gambar" />
 
     <TextView
         android:id="@+id/result"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_check"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="24dp"
         android:layout_marginVertical="15dp"
         android:gravity="center_vertical"
-        android:text="Result"
+        android:text="Hasil"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/loading"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_above="@id/btn_check"
         android:layout_marginVertical="15dp"
         android:layout_toEndOf="@id/result"
         android:visibility="gone" />
@@ -104,13 +106,13 @@
     <TextView
         android:id="@+id/tv_result"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_check"
         android:layout_marginVertical="15dp"
         android:layout_toEndOf="@id/result"
         android:gravity="center_vertical"
         android:text="Silahkan gambar aksara terlebih dahulu"
         android:textColor="@color/black"
-        android:textSize="12sp" />
+        android:textSize="18sp" />
 
 </RelativeLayout>
