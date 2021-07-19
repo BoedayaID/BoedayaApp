@@ -71,6 +71,7 @@ class DrawActivity : AppCompatActivity() {
                 DrawViewModel.RESULT_CORRECT -> {
                     binding.loading.visibility = View.GONE
                     binding.tvResult.visibility = View.VISIBLE
+                    binding.tvResult.setTextColor(Color.BLACK)
                     binding.tvResult.text =
                         "Benar, anda sudah bisa menggambar aksara ${state["actual_result"]}"
                 }
