@@ -34,4 +34,7 @@
     <string name="logout">Logout</string>
     <string name="detail_tempat_wisata">Detail Tempat Wisata</string>
     <string name="alamat">Kota Bandung</string>
+    <string name="aksara_jawa">Aksara Jawa</string>
+    <string name="btn_coba">Coba</string>
+    <string name="belajar_aksara">Belajar Aksara</string>
 </resources>

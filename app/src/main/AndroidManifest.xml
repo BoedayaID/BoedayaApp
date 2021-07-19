@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoedayaID"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.detail_wisata.DetailWisataActivity"></activity>
+        <activity android:name=".ui.draw_aksara.DrawActivity"></activity>
+        <activity android:name=".ui.detail_aksara.DetailAksaraActivity" />
+        <activity android:name=".ui.detail_wisata.DetailWisataActivity" />
         <activity android:name=".ui.register.RegisterActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />

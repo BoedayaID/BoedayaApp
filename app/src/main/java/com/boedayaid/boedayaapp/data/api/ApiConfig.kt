@@ -39,4 +39,13 @@ object ApiConfig {
             .build()
         return retrofit.create(TranslateServices::class.java)
     }
+
+    fun provideAksaraService(): AksaraServices {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://aksara-clasiffier-api.herokuapp.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(provideOkHttpClient())
+            .build()
+        return retrofit.create(AksaraServices::class.java)
+    }
 }
