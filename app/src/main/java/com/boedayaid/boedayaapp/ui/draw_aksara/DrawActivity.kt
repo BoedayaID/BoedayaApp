@@ -17,13 +17,11 @@ import com.boedayaid.boedayaapp.databinding.ActivityDrawBinding
 import com.bumptech.glide.Glide
 
 class DrawActivity : AppCompatActivity() {
-    companion object {
-        const val REQUEST_STORAGE = 1337
-    }
 
     private lateinit var binding: ActivityDrawBinding
     private val viewModel: DrawViewModel by viewModels()
     private lateinit var aksara: Aksara
+    private lateinit var sukuName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +37,13 @@ class DrawActivity : AppCompatActivity() {
         }
 
         aksara = intent.getParcelableExtra<Aksara>("EXTRA_DATA") as Aksara
+        sukuName = intent.getStringExtra("SUKU_NAME") as String
+
         binding.apply {
             Glide.with(applicationContext)
                 .load(aksara.symbol)
                 .into(imgAksara)
-            tvAksara.text = "Aksara ${aksara.nama}"
+            tvAksara.text = "Aksara $sukuName ${aksara.nama}"
         }
 
         binding.btnDelete.setOnClickListener {
@@ -52,7 +52,14 @@ class DrawActivity : AppCompatActivity() {
 
         binding.btnCheck.setOnClickListener {
             val bitmap = getBitmapFromView(binding.drawView)
-            viewModel.predictAksara(bitmap!!, aksara.nama)
+            when (sukuName) {
+                "Sunda" -> {
+                    viewModel.predictAksaraSunda(bitmap!!, aksara.nama)
+                }
+                else -> {
+                    viewModel.predictAksaraJawa(bitmap!!, aksara.nama)
+                }
+            }
         }
 
         viewModel.aksaraState.observe(this) { state ->
@@ -71,6 +78,7 @@ class DrawActivity : AppCompatActivity() {
                 DrawViewModel.RESULT_CORRECT -> {
                     binding.loading.visibility = View.GONE
                     binding.tvResult.visibility = View.VISIBLE
+                    binding.tvResult.setTextColor(Color.BLACK)
                     binding.tvResult.text =
                         "Benar, anda sudah bisa menggambar aksara ${state["actual_result"]}"
                 }

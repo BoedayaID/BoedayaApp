@@ -28,7 +28,7 @@ class DrawViewModel : ViewModel() {
     private val _aksaraState = MutableLiveData<Map<String, Any>>()
     val aksaraState get() = _aksaraState
 
-    fun predictAksara(bitmap: Bitmap, wantedResult: String) {
+    fun predictAksaraJawa(bitmap: Bitmap, wantedResult: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _aksaraState.postValue(mapOf("state" to RESULT_LOADING, "actual_result" to ""))
@@ -37,7 +37,7 @@ class DrawViewModel : ViewModel() {
                 val byte = stream.toByteArray()
 
                 val reqBody = byte.toRequestBody("image/jpeg".toMediaTypeOrNull())
-                val result = aksaraServices.predictImage(reqBody)
+                val result = aksaraServices.predictJawaImage(reqBody)
 
                 if (result.prediction.lowercase(Locale.getDefault())
                     == wantedResult.lowercase(Locale.getDefault())
@@ -58,6 +58,41 @@ class DrawViewModel : ViewModel() {
                     )
                 }
 
+            } catch (e: Exception) {
+                Log.d("Retrofit Exception", e.message.toString())
+                _aksaraState.postValue(mapOf("state" to RESULT_ERROR, "actual_result" to ""))
+            }
+        }
+    }
+
+    fun predictAksaraSunda(bitmap: Bitmap, wantedResult: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _aksaraState.postValue(mapOf("state" to RESULT_LOADING, "actual_result" to ""))
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream)
+                val byte = stream.toByteArray()
+
+                val reqBody = byte.toRequestBody("image/jpeg".toMediaTypeOrNull())
+                val result = aksaraServices.predictSundaImage(reqBody)
+
+                if (result.prediction.lowercase(Locale.getDefault())
+                    == wantedResult.lowercase(Locale.getDefault())
+                ) {
+                    _aksaraState.postValue(
+                        mapOf(
+                            "state" to RESULT_CORRECT,
+                            "actual_result" to result.prediction
+                        )
+                    )
+                } else {
+                    _aksaraState.postValue(
+                        mapOf(
+                            "state" to RESULT_WRONG,
+                            "actual_result" to result.prediction
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 Log.d("Retrofit Exception", e.message.toString())
                 _aksaraState.postValue(mapOf("state" to RESULT_ERROR, "actual_result" to ""))

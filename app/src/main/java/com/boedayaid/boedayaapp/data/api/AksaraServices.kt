@@ -8,7 +8,12 @@ import retrofit2.http.POST
 interface AksaraServices {
 
     @POST("predict")
-    suspend fun predictImage(
+    suspend fun predictJawaImage(
+        @Body image: RequestBody
+    ): AksaraResponse
+
+    @POST("predict-sunda")
+    suspend fun predictSundaImage(
         @Body image: RequestBody
     ): AksaraResponse
 

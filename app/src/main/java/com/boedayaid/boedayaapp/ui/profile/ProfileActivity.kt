@@ -54,10 +54,12 @@ class ProfileActivity : AppCompatActivity() {
 
         viewModel.userProfile.observe(this) {
             binding.tvUsername.text = it.username
-            val reference = Firebase.storage.reference.child(it.imageProfile)
-            Glide.with(applicationContext)
-                .load(reference)
-                .into(binding.imgProfile)
+            if (it.imageProfile.isNotEmpty()) {
+                val reference = Firebase.storage.reference.child(it.imageProfile)
+                Glide.with(applicationContext)
+                    .load(reference)
+                    .into(binding.imgProfile)
+            }
         }
 
         btnEditImgProfile.setOnClickListener {
