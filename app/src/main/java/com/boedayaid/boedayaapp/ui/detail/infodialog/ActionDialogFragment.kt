@@ -1,5 +1,6 @@
 package com.boedayaid.boedayaapp.ui.detail.infodialog
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.boedayaid.boedayaapp.data.model.DetailSuku
 import com.boedayaid.boedayaapp.databinding.FragmentActionDialogBinding
+import com.boedayaid.boedayaapp.ui.buy_ticket.BuyTicketActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -91,6 +93,12 @@ class ActionDialogFragment : DialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 binding.btnBucket.isChecked = false
+            }
+        }
+        binding.btnTicket.setOnClickListener {
+            Intent(requireContext(), BuyTicketActivity::class.java).also {
+                it.putExtra("EXTRA_DATA", tempatWisata)
+                startActivity(it)
             }
         }
     }

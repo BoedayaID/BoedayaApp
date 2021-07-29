@@ -35,7 +35,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:maxLines="12"
+        android:maxLines="7"
         android:text="@string/dummy_sejarah"
         android:textAlignment="center" />
 
@@ -50,7 +50,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_favorite_selector"
         android:textOff="Tambahkan ke Bucket"
-        android:textOn="Hapus dari Bucket"/>
+        android:textOn="Hapus dari Bucket" />
 
     <ToggleButton
         android:id="@+id/btn_history"
@@ -63,6 +63,16 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_favorite_selector"
         android:textOff="Tambahkan ke History"
-        android:textOn="Hapus dari History"/>
+        android:textOn="Hapus dari History" />
+
+    <Button
+        android:id="@+id/btn_ticket"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_history"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_favorite_selector"
+        android:text="Beli Tiket" />
 
 </RelativeLayout>
