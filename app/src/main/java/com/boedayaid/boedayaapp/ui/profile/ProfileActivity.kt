@@ -76,6 +76,7 @@ class ProfileActivity : AppCompatActivity() {
             when (position) {
                 0 -> tab.text = "Bucket"
                 1 -> tab.text = "History"
+                2 -> tab.text = "Tiket"
             }
         }.attach()
     }

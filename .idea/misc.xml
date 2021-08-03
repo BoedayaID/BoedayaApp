@@ -4,6 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/activity_buy_ticket.xml" value="0.25" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/activity_detail_wisata.xml" value="0.18206521739130435" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/activity_recipe.xml" value="0.22" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/activity_translate.xml" value="0.12436676798378926" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/fragment_action_dialog.xml" value="0.18819655521783182" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/fragment_info_dialog.xml" value="0.18819655521783182" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/fragment_list.xml" value="0.18819655521783182" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/fragment_recipe_dialog.xml" value="0.18135764944275581" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/fragment_ticket.xml" value="0.18819655521783182" />
+        <entry key="..\:/Users/Scorphy/AndroidStudioProjects/BoedayaApp/app/src/main/res/layout/item_ticket.xml" value="0.25" />
       </map>
     </option>
   </component>

@@ -1,11 +1,10 @@
 package com.boedayaid.boedayaapp.data.firebase.firestore
 
 import android.util.Log
-import com.boedayaid.boedayaapp.data.firebase.auth.FirebaseAuthService
 import com.boedayaid.boedayaapp.data.model.DetailSuku
 import com.boedayaid.boedayaapp.data.model.Ticket
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.flow.Flow

@@ -2,8 +2,6 @@ package com.boedayaid.boedayaapp.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.BoringLayout.make
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -17,11 +15,10 @@ import com.boedayaid.boedayaapp.ui.detail.adapter.RumahAdatAdapter
 import com.boedayaid.boedayaapp.ui.detail.adapter.TempatWisataAdapter
 import com.boedayaid.boedayaapp.ui.detail.infodialog.ActionDialogFragment
 import com.boedayaid.boedayaapp.ui.detail.infodialog.InfoDialogFragment
+import com.boedayaid.boedayaapp.ui.detail.infodialog.RecipeDialogFragment
 import com.boedayaid.boedayaapp.ui.detail_aksara.DetailAksaraActivity
 import com.boedayaid.boedayaapp.ui.translate.TranslateActivity
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.make
 import java.util.*
 
 class DetailActivity : AppCompatActivity() {
@@ -97,11 +94,8 @@ class DetailActivity : AppCompatActivity() {
         // config makanan daerah
         makananAdapter = MakananAdapter()
         makananAdapter.setOnClick { position ->
-            val makan = makananDaerah[position]
-            val infoDialog = InfoDialogFragment.newInstance(
-                makan.gambar!!,
-                makan.namaMakanan!!,
-                makan.deskripsi!!
+            val infoDialog = RecipeDialogFragment.newInstance(
+                makananDaerah[position]
             )
             infoDialog.show(supportFragmentManager, "Info Dialog")
         }
